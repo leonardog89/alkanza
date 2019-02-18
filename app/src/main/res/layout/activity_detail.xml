@@ -6,10 +6,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    <LinearLayout
+                  android:id="@+id/ly_sup"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  map:layout_constraintStart_toStartOf="parent"
+                  map:layout_constraintTop_toTopOf="parent"
+                  map:layout_constraintBottom_toTopOf="@+id/recycler"
+                  android:weightSum="100"
+                  android:padding="10dp">
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:text="Numero de lugares"/>
+
+        <TextView
+                android:id="@+id/numOfItems"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"/>
+
+
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintTop_toBottomOf="@+id/ly_sup"
+            map:layout_constraintBottom_toBottomOf="parent"></android.support.v7.widget.RecyclerView>
 
 </android.support.constraint.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.example.leonardo.alkanzatest
+package com.example.leonardo.alkanzatest.Utils
 
 import android.content.Context
 import android.util.Log
@@ -6,15 +6,16 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.leonardo.alkanzatest.Entity.PlaceResult
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.GsonBuilder
 import org.json.JSONObject
 
 open class Proxy {
 
-    var iProxy:IProxy?=null
+    var iProxy: IProxy?=null
 
-    fun setListener(iProxy:IProxy){
+    fun setListener(iProxy: IProxy){
         this.iProxy=iProxy
     }
 

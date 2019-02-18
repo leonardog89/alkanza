@@ -1,4 +1,4 @@
-package com.example.leonardo.alkanzatest
+package com.example.leonardo.alkanzatest.Entity
 
 import com.google.gson.annotations.SerializedName
 

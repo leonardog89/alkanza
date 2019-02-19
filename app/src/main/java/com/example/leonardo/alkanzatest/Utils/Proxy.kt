@@ -33,7 +33,7 @@ open class Proxy {
             Response.Listener<String> { response ->
 
                 var strResp = response.toString()
-                val jsonObj: JSONObject = JSONObject(strResp)
+                val jsonObj = JSONObject(strResp)
 
                 val gsonBuilder = GsonBuilder()
                 gsonBuilder.setDateFormat("M/d/yy hh:mm a")
@@ -47,6 +47,7 @@ open class Proxy {
 
                 }catch (e:Exception){
                     e.printStackTrace()
+                    iProxy?.successPlaces(null)
                 }
 
             },

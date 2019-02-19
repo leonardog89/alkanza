@@ -1,13 +1,16 @@
 package com.example.leonardo.alkanzatest.Views
 
 import android.content.Intent
+import android.location.Location
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.Toast
 import com.example.leonardo.alkanzatest.*
 import com.example.leonardo.alkanzatest.Entity.PlaceResult
 import com.example.leonardo.alkanzatest.Utils.IProxy
 import com.example.leonardo.alkanzatest.Utils.Proxy
+import com.example.leonardo.alkanzatest.Utils.RepoMinimun
 import com.example.leonardo.alkanzatest.Utils.RepoPlaces
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -35,11 +38,38 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IProxy,GoogleMap.O
 
     override fun successPlaces(placesResult: Array<PlaceResult>?) {
 
-        placesResult?.forEach {
-            val name=it.name
-            val position = LatLng(it.geometry?.location?.lat!!,it.geometry?.location?.lng!! )
-            mMap.addMarker(MarkerOptions().position(position).title(name))
-            repoPlaces!!.savePlace(it.id!!,it.name!!,it.geometry!!.location!!.lat!!,it.geometry!!.location!!.lng!!)
+        if(placesResult!=null) {
+
+            val locationA = Location("center")
+
+            locationA.setLatitude(pos!!.latitude)
+            locationA.setLongitude(pos!!.longitude)
+
+            val distanceVector = ArrayList<Int>()
+
+            for (it in placesResult) {
+                val position = LatLng(it.geometry?.location?.lat!!, it.geometry?.location?.lng!!)
+                val locationB = Location("punto B")
+                locationB.setLatitude(position.latitude)
+                locationB.setLongitude(position.longitude)
+                val distance = locationA.distanceTo(locationB).toInt()
+                distanceVector.add(distance)
+            }
+            var calculation = RepoMinimun().calculateMinimun(distanceVector)
+            for (it in placesResult.withIndex()) {
+                it.value
+                val name = it.value.name
+                val position = LatLng(it.value.geometry?.location?.lat!!, it.value.geometry?.location?.lng!!)
+                if(it.index>=calculation.pos){
+                    mMap.addMarker(MarkerOptions().position(position).title(name))
+                }else{
+                    mMap.addMarker(MarkerOptions().position(position).title(name).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)))
+                }
+
+                repoPlaces?.savePlace(it.value.id!!, it.value.name!!, it.value.geometry?.location?.lat!!, it.value.geometry!!.location!!.lng!!)
+            }
+        }else{
+            Toast.makeText(this@MapsActivity, "sin resultados", Toast.LENGTH_SHORT).show()
         }
     }
 

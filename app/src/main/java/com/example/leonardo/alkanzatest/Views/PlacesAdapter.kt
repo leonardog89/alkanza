@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.example.leonardo.alkanzatest.R
 import kotlinx.android.synthetic.main.item_list.view.*
 
-class AnimalAdapter(var items : ArrayList<String>, val context: Context) : RecyclerView.Adapter<ViewHolder>() {
+class PlacesAdapter(var items : ArrayList<String>, val context: Context) : RecyclerView.Adapter<ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder?.tvPlaceName?.text = items.get(position)
@@ -33,7 +33,6 @@ class AnimalAdapter(var items : ArrayList<String>, val context: Context) : Recyc
         this.items=items
         notifyDataSetChanged()
     }
-
 
 }
 

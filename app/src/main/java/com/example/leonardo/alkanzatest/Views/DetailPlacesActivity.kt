@@ -5,11 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager
 import com.example.leonardo.alkanzatest.Utils.IRepo
 import com.example.leonardo.alkanzatest.R
-import com.example.leonardo.alkanzatest.Utils.RepoPlaces
+import com.example.leonardo.alkanzatest.Utils.RepoRealm
 
 import kotlinx.android.synthetic.main.activity_detail.*
 
-class DetailActivity : AppCompatActivity() , IRepo {
+class DetailPlacesActivity : AppCompatActivity() , IRepo {
 
     override fun successPlaces(placesResult: ArrayList<String>?) {
         adapter!!.changeData(placesResult!!)
@@ -17,18 +17,20 @@ class DetailActivity : AppCompatActivity() , IRepo {
     }
 
     var places:  ArrayList<String>? = ArrayList()
-    var adapter: AnimalAdapter?=null
+    var adapter: PlacesAdapter?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        var repo= RepoPlaces()
+        var pos =intent.extras.getInt("pos")
+
+        var repo= RepoRealm()
         repo.setListener(this)
-        repo.getPlaces(this)
+        repo.getPlaces(this,pos)
 
         recycler.layoutManager = LinearLayoutManager(this)
-        adapter= AnimalAdapter(places!!, this)
+        adapter= PlacesAdapter(places!!, this)
         recycler.adapter =adapter
     }
 }

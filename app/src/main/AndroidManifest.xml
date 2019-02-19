@@ -41,7 +41,12 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".Views.DetailActivity"
+                android:name=".Views.DetailPlacesActivity"
+                android:label="@string/title_activity_detail"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+                android:name=".Views.DetailSearchActivity"
                 android:label="@string/title_activity_detail"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>

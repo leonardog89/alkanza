@@ -11,7 +11,7 @@ import com.example.leonardo.alkanzatest.Entity.PlaceResult
 import com.example.leonardo.alkanzatest.Utils.IProxy
 import com.example.leonardo.alkanzatest.Utils.Proxy
 import com.example.leonardo.alkanzatest.Utils.RepoMinimun
-import com.example.leonardo.alkanzatest.Utils.RepoPlaces
+import com.example.leonardo.alkanzatest.Utils.RepoRealm
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -26,7 +26,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IProxy,GoogleMap.O
 
     var pos :LatLng?=null
     private lateinit var mMap: GoogleMap
-    var repoPlaces: RepoPlaces?=null
+    var repoRealm: RepoRealm?=null
+    var radio :String?= null
 
     override fun onMapClick(p0: LatLng?) {
 
@@ -37,6 +38,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IProxy,GoogleMap.O
     }
 
     override fun successPlaces(placesResult: Array<PlaceResult>?) {
+
+
 
         if(placesResult!=null) {
 
@@ -56,6 +59,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IProxy,GoogleMap.O
                 distanceVector.add(distance)
             }
             var calculation = RepoMinimun().calculateMinimun(distanceVector)
+            Toast.makeText(this@MapsActivity, "desbalance mimimo: "+calculation.minumum, Toast.LENGTH_SHORT).show()
+            var searchId= repoRealm?.saveSearch(radio!!, pos!!.latitude,pos!!.latitude,calculation.minumum)
             for (it in placesResult.withIndex()) {
                 it.value
                 val name = it.value.name
@@ -66,7 +71,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IProxy,GoogleMap.O
                     mMap.addMarker(MarkerOptions().position(position).title(name).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)))
                 }
 
-                repoPlaces?.savePlace(it.value.id!!, it.value.name!!, it.value.geometry?.location?.lat!!, it.value.geometry!!.location!!.lng!!)
+                repoRealm?.savePlace(it.value.id!!, it.value.name!!, it.value.geometry?.location?.lat!!, it.value.geometry!!.location!!.lng!!,searchId!!)
             }
         }else{
             Toast.makeText(this@MapsActivity, "sin resultados", Toast.LENGTH_SHORT).show()
@@ -80,22 +85,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, IProxy,GoogleMap.O
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-        repoPlaces= RepoPlaces()
+        repoRealm= RepoRealm()
 
 
         bt_search.setOnClickListener {
-            var radio=editText.text.toString()
+            radio=editText.text.toString()
             try {
-                radio.toInt()
+                radio!!.toInt()
                 var proxy= Proxy()
                 proxy.setListener(this)
-                proxy.getPlaces(this,pos!!,radio)
+                proxy.getPlaces(this,pos!!,radio!!)
             }catch (e:Exception){
                 editText.error="Ingrese un entero"
             }
         }
         bt_detail.setOnClickListener {
-            val intent = Intent(this, DetailActivity::class.java)
+            val intent = Intent(this, DetailSearchActivity::class.java)
             startActivity(intent)
         }
     }
